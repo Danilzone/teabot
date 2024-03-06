@@ -22,6 +22,6 @@ async def main():
 
 
 if __name__ == "__main__":
-
+ 
     print("[cyan1 blink bold]Bot work[/cyan1  blink bold]")
     asyncio.run(main())

@@ -1,13 +1,14 @@
 
-from config import cmds, ver
+from config import ver
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command, CommandObject
 from data import db
 import datetime
 from rich import print
+from rich.console import Console
 import random
-
+console = Console()
 
 def russif(drank):
     if drank == "tea":
@@ -33,12 +34,6 @@ db = db.Db('./data/main.db')
 @router.message(F.text == "/start")
 async def start(message : Message):
     await message.answer(f"Здравствуй друг, что хочешь выпить?🧐\n<b>Список команд - /h</b>")
-
-
-@router.message(Command(commands=["h", "help"]))
-async def help(message : Message):
-    await message.answer(f"[ К О М А Н Д Ы] \n \n {cmds[0]}")
-
 
 @router.message(Command(commands=['tea', 'чай']))
 async def tea(message : Message):
@@ -105,11 +100,11 @@ async def wine(message : Message):
 @router.message(Command(commands=['champagne', 'cham', 'champ', 'шампанское', 'шампунь', 'шам']))
 async def champagne(message : Message):
     date = datetime.datetime.now()
-    check = db.time_check(message.from_user.id, message.from_user.username, message.from_user.full_name, date, 'wine')
-    
+    check = db.time_check(message.from_user.id, message.from_user.username, message.from_user.full_name, date, 'champagne')
+        
     if check[0]:
         lit = round(random.uniform(0.3, 6),2)
-        res = db.drank(message.from_user.id, message.from_user.username, message.from_user.full_name, lit, date, 'wine')
+        res = db.drank(message.from_user.id, message.from_user.username, message.from_user.full_name, lit, date, 'champagne')
         await message.answer(f"{message.from_user.first_name} выпил <b>{lit} л.</b> шампанского\nВыпито всего <b>{res}</b> л." )
     else: 
         await message.answer(f"Время для шампуня еще не подошло🥴🍾\nПодожди <b>{check[1]}</b> мин.")
